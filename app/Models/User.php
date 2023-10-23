@@ -59,7 +59,7 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    protected $points = array(
+    protected $attributes = [
         'points' => 0,
-    );
+    ];
 }

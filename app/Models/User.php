@@ -65,10 +65,10 @@ class User extends Authenticatable
     ];
 
     public function survey(): HasMany{
-        return $this->hasMany(Survey::class);
+        return $this->hasMany(Survey::class, "survey_id");
     }
 
-    public function answers(): HasMany{
-        return $this->hasMany(Answers::class);
+    public function answer(): HasMany{
+        return $this->hasMany(Answer::class, "answer_id");
     }
 }

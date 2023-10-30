@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Survey extends Model
 {
     use HasFactory;
+
+    protected $fillable = ["user_id","title"];
+
     public function user(): BelongsTo{
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, "user_id");
     }
     public function questions(): HasMany{
-        return $this->hasMany(Question::class);
+        return $this->hasMany(Question::class, "question_id");
     }
 }

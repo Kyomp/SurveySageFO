@@ -10,7 +10,7 @@ class Survey extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["user_id","title"];
+    protected $fillable = ["user_id","title","open"];
 
     public function user(): BelongsTo{
         return $this->belongsTo(User::class, "user_id");

@@ -14,14 +14,14 @@ use App\Http\Controllers\HomePageController;
 |
 */
 
-Route::get('/', [HomePageController::class, 'homepage']);
+Route::get('/', function () {
+    return redirect()->route('register');
+});
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [HomePageController::class, "homepage"])->name('dashboard');
 });

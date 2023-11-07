@@ -9,9 +9,8 @@ use Auth;
 class HomePageController extends Controller
 {
     function homepage () {
-        $ownSurveys = Survey::where('id', Auth::user()->id);
-        echo $ownSurveys->id;
-        
-        return view('dashboard',['ownSurveys' => $ownSurveys]);
+        $ownSurveys = Survey::all()->where("user_id", Auth::user()->id);
+        $otherSurveys = Survey::all()->where("user_id" ,"!=", Auth::user()->id);
+        return view('dashboard',['ownSurveys' => $ownSurveys, 'user' => Auth::user(), 'otherSurveys' => $otherSurveys]);
     }
 }

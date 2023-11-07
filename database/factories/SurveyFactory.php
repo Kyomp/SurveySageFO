@@ -20,6 +20,7 @@ class SurveyFactory extends Factory
         return [
             'title' => $this->faker->sentence,
             'user_id'=> User::inRandomOrder()->first()->id,
+            'points' => $this->faker->randomNumber(1, true),
         ];
     }
 }

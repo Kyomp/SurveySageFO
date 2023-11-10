@@ -3,7 +3,7 @@
         <h2 class="text-x leading-tight">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex flex-row justify-between space-x-14">
-                    <a href="" class="rounded-lg overflow-hidden h-40 w-1/2 text-white p-3 m" >
+                    <a href="" class="rounded-lg overflow-hidden h-40 w-1/2 text-white p-3 m" style="background: linear-gradient(to bottom, #2B047E, #3e06b6); ">
                         {{__('Manage Your Surveys:')}}
                         @php
                           $count = 1;

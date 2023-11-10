@@ -33,7 +33,7 @@
             </div>
             <div class="flex space-x-10 mt-10">
                 @foreach ($otherSurveys as $otherSurvey)
-                    <a href="" class="w-1/4 p-6 rounded-lg" style="background: linear-gradient(to bottom, #2B047E, #3e06b6); background: #2B047E; color: #C1A4FF">
+                    <a href="" class="w-1/4 p-6 rounded-lg" style="background: linear-gradient(to bottom, #2B047E, #3e06b6); color: #C1A4FF">
                         <div>
                             <p class="mb-2 text-xs font-normal text-inherit">
                                 {{$otherSurvey->title}}

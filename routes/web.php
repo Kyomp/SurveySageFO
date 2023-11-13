@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\PointsController;
 use App\Http\Controllers\SurveyController;
-use app\Http\Controllers\QuestionController;
+use App\Http\Controllers\QuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,11 @@ use app\Http\Controllers\QuestionController;
 
 Route::get('/', function () {
     return redirect()->route('register');
+});
+
+Route::prefix('/points')->group(function () {
+    Route::get('', [PointsController::class,'pointpage'])->name('points');
+    Route::get('/{number}', [PointsController::class,'exchangePoints'])->name('');
 });
 
 Route::middleware([

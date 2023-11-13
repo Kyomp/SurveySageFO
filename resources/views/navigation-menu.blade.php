@@ -5,8 +5,9 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('dashboard') }}" class="flex flex-row items-center space-x-1">
                         <x-application-mark class="block h-9 w-auto" />
+                        <div>SurveySage</div>
                     </a>
                 </div>
 

@@ -42,16 +42,16 @@ class SurveyController extends Controller
     }
     function SaveSurvey(Request $request, $survey_id){
 
-        // $survey = Survey::find($survey_id);
+        $survey = Survey::find($survey_id);
 
-        // $Form = $request->validate([
-        //     'title' => 'required',
-        // ]);
+        $Form = $request->validate([
+            'title' => 'required',
+        ]);
 
-        // if ($survey->title != $Form['title']) {
-        //     $survey->title = $Form['title'];
-        //     $survey->save();
-        // }
+        if ($survey->title != $Form['title']) {
+            $survey->title = $Form['title'];
+            $survey->save();
+        }
 
         $survey_questions = $request->validate([
             'questions.*' => 'required',
@@ -75,9 +75,11 @@ class SurveyController extends Controller
             }
             else{
                 $quest = Question::find($ids[$index]);
-                $quest->question = $question;
-                $quest->question_type = $types[$index];
-                $quest->save();
+                if($quest->question != $question || $quest->question_type != $types[$index]){
+                    $quest->question = $question;
+                    $quest->question_type = $types[$index];
+                    $quest->save();
+                }
             }
          }
 

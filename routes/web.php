@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\SurveyController;
+use app\Http\Controllers\QuestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +27,11 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [HomePageController::class, "homepage"])->name('dashboard');
 });
+
+Route::get('/ManageSurvey', [SurveyController::class, "ManageSurvey"])->name('ManageSurvey');
+
+Route::get('/CreateSurvey', [SurveyController::class, "CreateSurvey"])->name('CreateSurvey');
+
+Route::post('/CreateSurvey', [SurveyController::class, "StoreSurvey"])->name('StoreSurvey');
+
+

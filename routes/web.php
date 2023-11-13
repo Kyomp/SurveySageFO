@@ -37,10 +37,14 @@ Route::middleware([
 Route::prefix('/survey')->group(function(){
     Route::get('/manage', [SurveyController::class, "ManageSurvey"])->name('ManageSurvey');
 
-    Route::get('/create', [SurveyController::class, "CreateSurvey"])->name('CreateSurvey');
+    Route::get('/create', [SurveyController::class, "CreateSurvey"]);
 
-    Route::get('/edit/{survey_id}', [SurveyController::class, "EditSurvey"])->name('EditSurvey');
+    Route::get('/edit/{survey_id}', [SurveyController::class, "EditSurvey"]);
 
-    Route::post('/edit/{survey_id}', [SurveyController::class, "SaveSurvey"])->name('SaveSurvey');
+    Route::post('/edit/{survey_id}', [SurveyController::class, "SaveSurvey"]);
+
+    Route::get('/open/{survey_id}', [SurveyController::class, "OpenSurvey"]);
+
+    Route::get('/close/{survey_id}', [SurveyController::class, "CloseSurvey"]);
 });
 

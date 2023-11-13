@@ -86,6 +86,19 @@ class SurveyController extends Controller
         return Redirect::to('/survey/manage');
     }
 
+    function OpenSurvey($survey_id){
+        $survey = Survey::find($survey_id);
+        $survey->open = 1;
+        $survey->save();
+        return Redirect::to('/survey/manage');
+    }
+
+    function CloseSurvey($survey_id){
+        $survey = Survey::find($survey_id);
+        $survey->open = 0;
+        $survey->save();
+        return Redirect::to('/survey/manage');
+    }
     function ViewSurvey(){
 
     }

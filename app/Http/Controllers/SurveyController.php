@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Survey;
 use App\Models\Question;
 use Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class SurveyController extends Controller
 {
@@ -26,36 +27,61 @@ class SurveyController extends Controller
     }
 
     function CreateSurvey(){
-        $QuestionsArray = [];
-        return view('CreateSurvey', ['questions'=> $QuestionsArray]);
+        $survey = new Survey;
+        $survey->user_id = Auth::user()->id;
+        $survey->points = 50;
+        $survey->open = 0;
+        $survey->title = '';
+        $survey->save();
+        return Redirect::to("/survey/edit/$survey->id");
     }
+    function EditSurvey($survey_id){
+        $survey = Survey::all()->where("id", $survey_id)->first();
+        $questions = Question::all()->where("survey_id", $survey_id);
+        return view('EditSurvey', ["survey"=>$survey, "questions"=>$questions]);
+    }
+    function SaveSurvey(Request $request, $survey_id){
 
-    function StoreSurvey(Request $request){
-        // dd($request->all());
+        // $survey = Survey::find($survey_id);
 
-        $SurveyData = $request->validate([
-            'title' => 'required',
-        ]);
+        // $Form = $request->validate([
+        //     'title' => 'required',
+        // ]);
 
-        $SurveyData['user_id'] = Auth::user()->id;
-        $SurveyData['points'] = 200;
-        $SurveyData['open'] = 1;
+        // if ($survey->title != $Form['title']) {
+        //     $survey->title = $Form['title'];
+        //     $survey->save();
+        // }
 
-        $survey = Survey::create($SurveyData);
-
-        $questions = $request->validate([
+        $survey_questions = $request->validate([
             'questions.*' => 'required',
+            'id.*' => 'required',
+            'type.*' => 'required'
         ]);
 
-        $questionData = $request->questions;
-        foreach($questionData as $question) {
-            $quest = new Question;
-            $quest->question = $question;
-            $quest->question_type = 1;
-            $quest->survey_id = $survey->id;
-            $quest->save();
-            // Question::create($question);
-        }
+        // dump($survey_questions);
+
+        $questions = $survey_questions['questions'];
+        $ids = $survey_questions['id'];
+        $types = $survey_questions['type'];
+
+        foreach( $questions as $index => $question ) {
+            if($ids[$index]==-1){
+                $quest = new Question;
+                $quest->question = $question;
+                $quest->survey_id = $survey_id;
+                $quest->question_type = $types[$index];
+                $quest->save();
+            }
+            else{
+                $quest = Question::find($ids[$index]);
+                $quest->question = $question;
+                $quest->question_type = $types[$index];
+                $quest->save();
+            }
+         }
+
+        return Redirect::to('/survey/manage');
     }
 
     function ViewSurvey(){

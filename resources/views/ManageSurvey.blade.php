@@ -30,7 +30,7 @@
                         Questions
                     </div>
                 </div>
-                <a href="{{url('/')}}" class="overflow-hidden">
+                <a href="{{url('/survey/edit/'.$ownSurvey->id)}}" class="overflow-hidden">
                     <div class="w-full text-center rounded-b-lg" style="color: white; background-color: #2B047E" >
                         Edit Survey
                     </div>
@@ -39,7 +39,7 @@
             @endforeach
             
                 {{-- Plus Button --}}
-                <a href="{{url('/CreateSurvey')}}" class="w-1/5 rounded-lg mb-3 mx-2 p-6 rounded-lg" style="background: #808080; color: #FFFFFF">
+                <a href="{{url('/survey/create')}}" class="w-1/5 rounded-lg mb-3 mx-2 p-6 rounded-lg" style="background: #808080; color: #FFFFFF">
                     <h2 class="mb-3 text-center">
                         <div class="font-semibold text-5xl text-center mt">
                              {{__('+')}}

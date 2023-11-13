@@ -10,7 +10,7 @@ class HomePageController extends Controller
 {
     public function homepage () {
         $ownSurveys = Survey::all()->where("user_id", Auth::user()->id);
-        $otherSurveys = Survey::all()->where("user_id" ,"!=", Auth::user()->id);
+        $otherSurveys = Survey::all()->where("user_id" ,"!=", Auth::user()->id)->where("open",1);
         return view('dashboard',['ownSurveys' => $ownSurveys, 'user' => Auth::user(), 'otherSurveys' => $otherSurveys]);
     }
 }

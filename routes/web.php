@@ -23,7 +23,7 @@ Route::get('/', function () {
 
 Route::prefix('/points')->group(function () {
     Route::get('', [PointsController::class,'pointpage'])->name('points');
-    Route::get('/{number}', [PointsController::class,'exchangePoints'])->name('');
+    Route::get('/{number}', [PointsController::class,'exchangePoints'])->name('exchange');
 });
 
 Route::middleware([
@@ -34,10 +34,13 @@ Route::middleware([
     Route::get('/dashboard', [HomePageController::class, "homepage"])->name('dashboard');
 });
 
-Route::get('/ManageSurvey', [SurveyController::class, "ManageSurvey"])->name('ManageSurvey');
+Route::prefix('/survey')->group(function(){
+    Route::get('/manage', [SurveyController::class, "ManageSurvey"])->name('ManageSurvey');
 
-Route::get('/CreateSurvey', [SurveyController::class, "CreateSurvey"])->name('CreateSurvey');
+    Route::get('/create', [SurveyController::class, "CreateSurvey"])->name('CreateSurvey');
 
-Route::post('/CreateSurvey', [SurveyController::class, "StoreSurvey"])->name('StoreSurvey');
+    Route::get('/edit/{survey_id}', [SurveyController::class, "EditSurvey"])->name('EditSurvey');
 
+    Route::post('/edit/{survey_id}', [SurveyController::class, "SaveSurvey"])->name('SaveSurvey');
+});
 

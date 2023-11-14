@@ -56,16 +56,30 @@ class SurveyController extends Controller
         $survey_questions = $request->validate([
             'questions.*' => 'required',
             'id.*' => 'required',
-            'type.*' => 'required'
+            'type.*' => 'required',
+            'choice1.*' => 'required',
+            'choice2.*' => 'required',
+            'choice3.*' => 'required',
+            'choice4.*' => 'required',
         ]);
 
-        // dump($survey_questions);
+        dump($survey_questions);
 
         $questions = $survey_questions['questions'];
         $ids = $survey_questions['id'];
         $types = $survey_questions['type'];
+        $choice1 = $survey_questions['choice1'];
+        $choice2 = $survey_questions['choice2'];
+        $choice3 = $survey_questions['choice3'];
+        $choice4 = $survey_questions['choice4'];
+
+        $count = 0;
 
         foreach( $questions as $index => $question ) {
+            if($types[$index]==2){
+                $question = $question."[{".$choice1[$count]."}{".$choice2[$count]."}{".$choice3[$count]."}{".$choice4[$count]."}]";
+                $count+=1;
+            } 
             if($ids[$index]==-1){
                 $quest = new Question;
                 $quest->question = $question;
@@ -75,9 +89,8 @@ class SurveyController extends Controller
             }
             else{
                 $quest = Question::find($ids[$index]);
-                if($quest->question != $question || $quest->question_type != $types[$index]){
+                if($quest->question != $question){
                     $quest->question = $question;
-                    $quest->question_type = $types[$index];
                     $quest->save();
                 }
             }

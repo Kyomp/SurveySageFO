@@ -63,16 +63,15 @@ class SurveyController extends Controller
             'choice4.*' => 'required',
         ]);
 
-        dump($survey_questions);
-
         $questions = $survey_questions['questions'];
         $ids = $survey_questions['id'];
         $types = $survey_questions['type'];
-        $choice1 = $survey_questions['choice1'];
-        $choice2 = $survey_questions['choice2'];
-        $choice3 = $survey_questions['choice3'];
-        $choice4 = $survey_questions['choice4'];
-
+        if(array_key_exists('choice1', $survey_questions)){
+            $choice1 = $survey_questions['choice1'];
+            $choice2 = $survey_questions['choice2'];
+            $choice3 = $survey_questions['choice3'];
+            $choice4 = $survey_questions['choice4'];
+        }
         $count = 0;
 
         foreach( $questions as $index => $question ) {

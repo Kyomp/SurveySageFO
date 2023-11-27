@@ -12,8 +12,8 @@
             </div>
         </h2>
 
-        <div class="m-3">
-            <div class="flex flex-wrap flex-start justify-start max-w-7xl mx-auto mt-10">
+        <div class="m-3 justify-start">
+            <div class="flex flex-wrap flex-start justify-start max-w-8xl mx-auto mt-10">
             @foreach ($ownSurveys as $ownSurvey)
 
             <div class="flex flex-col justify-between w-1/5 rounded-lg mb-3 mx-2" style="background: linear-gradient(to bottom, #2B047E, #3e06b6); color: #C1A4FF">

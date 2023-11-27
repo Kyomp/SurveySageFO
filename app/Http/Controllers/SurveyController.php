@@ -35,11 +35,13 @@ class SurveyController extends Controller
         $survey->save();
         return Redirect::to("/survey/edit/$survey->id");
     }
+
     function EditSurvey($survey_id){
         $survey = Survey::all()->where("id", $survey_id)->first();
         $questions = Question::all()->where("survey_id", $survey_id);
         return view('EditSurvey', ["survey"=>$survey, "questions"=>$questions]);
     }
+
     function SaveSurvey(Request $request, $survey_id){
 
         $survey = Survey::find($survey_id);
@@ -111,7 +113,5 @@ class SurveyController extends Controller
         $survey->save();
         return Redirect::to('/survey/manage');
     }
-    function ViewSurvey(){
 
-    }
 }

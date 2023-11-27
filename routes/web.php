@@ -5,6 +5,8 @@ use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\PointsController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\AnswersController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,4 +49,14 @@ Route::prefix('/survey')->group(function(){
 
     Route::get('/close/{survey_id}', [SurveyController::class, "CloseSurvey"]);
 });
+
+Route::prefix('/survey/participate')->group(function(){
+    Route::get('/{survey_id}', [QuestionController::class, "TakeSurvey"]);
+
+    Route::get('/answer/{survey_id}', [QuestionController::class, "AnswerSurvey"]);
+    Route::post('/answer/{survey_id}', [AnswersController::class, "SaveAnswers"]);
+    
+});
+
+
 

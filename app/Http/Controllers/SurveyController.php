@@ -29,7 +29,7 @@ class SurveyController extends Controller
     function CreateSurvey(){
         $survey = new Survey;
         $survey->user_id = Auth::user()->id;
-        $survey->points = 50;
+        $survey->points = 0;
         $survey->open = 0;
         $survey->title = '';
         $survey->save();
@@ -43,17 +43,6 @@ class SurveyController extends Controller
     }
 
     function SaveSurvey(Request $request, $survey_id){
-
-        $survey = Survey::find($survey_id);
-
-        $Form = $request->validate([
-            'title' => 'required',
-        ]);
-
-        if ($survey->title != $Form['title']) {
-            $survey->title = $Form['title'];
-            $survey->save();
-        }
 
         $survey_questions = $request->validate([
             'questions.*' => 'required',
@@ -75,12 +64,17 @@ class SurveyController extends Controller
             $choice4 = $survey_questions['choice4'];
         }
         $count = 0;
-
+        $pointTotal = 0;
         foreach( $questions as $index => $question ) {
             if($types[$index]==2){
                 $question = $question."[{".$choice1[$count]."}{".$choice2[$count]."}{".$choice3[$count]."}{".$choice4[$count]."}]";
                 $count+=1;
+                $pointTotal+=2;
             } 
+            else{
+                $pointTotal+=3;
+            }
+
             if($ids[$index]==-1){
                 $quest = new Question;
                 $quest->question = $question;
@@ -95,15 +89,28 @@ class SurveyController extends Controller
                     $quest->save();
                 }
             }
-         }
+        }
+
+        $survey = Survey::find($survey_id);
+
+        $Form = $request->validate([
+            'title' => 'required',
+        ]);
+
+        $survey->points=$pointTotal;
+        $survey->title = $Form['title'];
+        $survey->save();
 
         return Redirect::to('/survey/manage');
     }
 
     function OpenSurvey($survey_id){
         $survey = Survey::find($survey_id);
-        $survey->open = 1;
-        $survey->save();
+        $user = Auth::user();
+        if($user->points > $survey->points){
+            $survey->open = 1;
+            $survey->save();
+        }
         return Redirect::to('/survey/manage');
     }
 

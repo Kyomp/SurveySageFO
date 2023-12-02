@@ -27,6 +27,7 @@ class PointsController extends Controller
                 "https://www.youtube.com/shorts/teHvB-EWOlo",
                 "https://www.youtube.com/shorts/GXi3g0Td1Ig",
                 "https://www.youtube.com/watch?v=0byKD-4iFn0"];
+
         return redirect()->away($urls[array_rand($urls)]);
     }
 }

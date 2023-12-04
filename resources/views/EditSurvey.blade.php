@@ -31,10 +31,10 @@
             <div class="pt-6 flex justify-center items-center">
               <div class="shadow-md rounded px-6 pt-6 pb-12 mb-1/2 w-6/12" style="background-color: #2B047E;">
                 <div class="mb-5 w-7/12">
-                  <input class="shadow appearance-none border-none placeholder-white rounded w-3/4 py-2 px-3 text-white" name="questions[]" type="text" placeholder="Question Text" value="{{$question->question}}" style="background-color: #4417A3;">
+                  <input class="shadow appearance-none border-none placeholder-white rounded w-3/4 py-2 px-3 text-white" name="questions[]" type="text" placeholder="Question Text" value="{{$question->question}}" style="background-color: #4417A3;" required>
                 </div>
                 <input disabled class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="answers[]" type="text" placeholder="Write Your Answer Here" style="background-color: #4417A3;">
-                <input type="hidden" name="id[]" value="{{$question->id}}">
+                <input type="hidden" name="id[]" value="{{$question->id}}" >
                 <input type="hidden" name="type[]" value="{{$question->question_type}}">
               </div>
             </div>          
@@ -56,19 +56,19 @@
           <div class="pt-6 flex justify-center items-center">
           <div class="shadow-md rounded px-6 pt-6 pb-12 mb-1/2 w-6/12" style="background-color: #2B047E;">
             <div class="mb-5 w-7/12">
-              <input class="shadow appearance-none border-none placeholder-white rounded w-3/4 py-2 px-3 text-white" name="questions[]" type="text" placeholder="Question Text" value="{{$question->question}}" style="background-color: #4417A3;">
+              <input class="shadow appearance-none border-none placeholder-white rounded w-3/4 py-2 px-3 text-white" name="questions[]" type="text" placeholder="Question Text" value="{{$question->question}}" style="background-color: #4417A3;" required>
             </div>
             <div class="mb-5 w-11/12">
-              <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice1[]" type="text" placeholder="Choice1" value="{{$choices[0]}}" style=" background-color: #4417A3;">
+              <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice1[]" type="text" placeholder="Choice1" value="{{$choices[0]}}" style=" background-color: #4417A3;" required>
             </div>
             <div class="mb-5 w-11/12">
-              <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice2[]" type="text" placeholder="Choice2" value="{{$choices[1]}}" style=" background-color: #4417A3;">
+              <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice2[]" type="text" placeholder="Choice2" value="{{$choices[1]}}" style=" background-color: #4417A3;" required>
             </div>
             <div class="mb-5 w-11/12">
-              <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice3[]" type="text" placeholder="Choice3" value="{{$choices[2]}}" style=" background-color: #4417A3;">
+              <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice3[]" type="text" placeholder="Choice3" value="{{$choices[2]}}" style=" background-color: #4417A3;" required>
             </div>
             <div class="mb-5 w-11/12">
-              <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice4[]" type="text" placeholder="Choice4" value="{{$choices[3]}}" style="  background-color: #4417A3;">
+              <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice4[]" type="text" placeholder="Choice4" value="{{$choices[3]}}" style="  background-color: #4417A3;" required>
             </div>
 
             <input type="hidden" name="id[]" value="{{$question->id}}">
@@ -112,7 +112,7 @@
       newQuestion.innerHTML = `
         <div class="shadow-md rounded px-6 pt-6 pb-12 mb-1/2 w-6/12" style="background-color: #2B047E;">
           <div class="mb-5 w-7/12">
-            <input class="shadow appearance-none border-none placeholder-white rounded w-3/4 py-2 px-3 text-white" name="questions[]" type="text" placeholder="Question Text" style="background-color: #4417A3;">
+            <input class="shadow appearance-none border-none placeholder-white rounded w-3/4 py-2 px-3 text-white" name="questions[]" type="text" placeholder="Question Text" style="background-color: #4417A3;" required>
           </div>
           <input disabled class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="answers[]" type="text" placeholder="Write Your Answer Here" style="background-color: #4417A3;">
           <input type="hidden" name="id[]" value="-1">
@@ -131,19 +131,19 @@
       newQuestion.innerHTML = `
         <div class="shadow-md rounded px-6 pt-6 pb-12 mb-1/2 w-6/12" style="background-color: #2B047E;">
           <div class="mb-5 w-7/12">
-            <input class="shadow appearance-none border-none placeholder-white rounded w-3/4 py-2 px-3 text-white" name="questions[]" type="text" placeholder="Question Text" style="background-color: #4417A3;">
+            <input class="shadow appearance-none border-none placeholder-white rounded w-3/4 py-2 px-3 text-white" name="questions[]" type="text" placeholder="Question Text" style="background-color: #4417A3;" required>
           </div>
           <div class="mb-5 w-11/12">
-            <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice1[]" type="text" placeholder="Choice1" style="background-color: #4417A3;">
+            <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice1[]" type="text" placeholder="Choice1" style="background-color: #4417A3;" required>
           </div>
           <div class="mb-5 w-11/12">
-            <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice2[]" type="text" placeholder="Choice2" style="background-color: #4417A3;">
+            <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice2[]" type="text" placeholder="Choice2" style="background-color: #4417A3;" required>
           </div>
           <div class="mb-5 w-11/12">
-            <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice3[]" type="text" placeholder="Choice3" style="background-color: #4417A3;">
+            <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice3[]" type="text" placeholder="Choice3" style="background-color: #4417A3;" required>
           </div>
           <div class="mb-5 w-11/12">
-            <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice4[]" type="text" placeholder="Choice4" style="background-color: #4417A3;">
+            <input class="shadow appearance-none border-none placeholder-white rounded w-full py-2 px-3 text-white" name="choice4[]" type="text" placeholder="Choice4" style="background-color: #4417A3;" required>
           </div>
 
           <input type="hidden" name="id[]" value="-1">

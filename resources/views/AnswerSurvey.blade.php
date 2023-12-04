@@ -21,6 +21,7 @@
                                 </div>
                                 <input type="hidden" name="UserId[]" value="{{$user->id}}">
                                 <input type="hidden" name="QuestionId[]" value="{{$question->id}}">
+                                <input type="hidden" name="SurveyId[]" value="{{$question->survey_id}}">
                             </div>
                         @else
                         <?php
@@ -40,32 +41,18 @@
                             </div>
                         </div>
 
-                        <div id="questions-container" class="mt-3 flex justify-center items-center">
-                            <div class="pt-6 flex justify-center items-center text-white">
-                                <div class="rounded h-10 flex items-center justify-center" style="background-color: #2B047E;">
-                                    <button type="button" onclick="Choice1()" class="mr-2 w-80">
-                                        {{ $choices[0] }}
-                                    </button>
-                                </div>
-                                <div class="rounded h-10 flex items-center justify-center" style="background-color: #2B047E;">
-                                    <button type="button" onclick="Choice2()" class="mr-2 w-80">
-                                        {{ $choices[1] }}
-                                    </button>
-                                </div>
-                                <div class="rounded h-10 flex items-center justify-center" style="background-color: #2B047E;">
-                                    <button type="button" onclick="Choice3()" class="mr-2 w-80">
-                                        {{ $choices[2] }}
-                                    </button>
-                                </div>
-                                <div class="rounded h-10 flex items-center justify-center" style="background-color: #2B047E;">
-                                    <button type="button" onclick="Choice4()" class="mr-2 w-80">
-                                        {{ $choices[3] }}
-                                    </button>
-                                </div>
+                        <div id="questions-container" class="pt-6 flex justify-center items-center" >
+                            <div class="p mb-1/2 w-11/12 text-white " style="background-color: #390e96;">
+                                @foreach ($choices as $index => $choice)
+                                    <div class="ml-5 mt-5 mb-5 flex items-center">
+                                        <input type="radio" name="answers[{{$loop->parent->index}}]" value="{{ $index }}" class="mr-2">
+                                        <label class="ml-2">{{ $choice }}</label>
+                                    </div>
+                                @endforeach
                             </div>
-                            <input type="hidden" id="MPC" name="answers[]" value="">
                             <input type="hidden" name="UserId[]" value="{{$user->id}}">
                             <input type="hidden" name="QuestionId[]" value="{{$question->id}}">
+                            <input type="hidden" name="SurveyId[]" value="{{$question->survey_id}}">
                         </div>
                         @endif
                     </div>
@@ -79,21 +66,3 @@
         </form>
     </div>
 </x-app-layout>
-
-<script>
-      function Choice1() {
-        document.getElementById('MPC').value = "1";
-      }
-
-      function Choice2() {
-        document.getElementById('MPC').value = "2";
-    }
-
-    function Choice3() {
-        document.getElementById('MPC').value = "3";
-    }
-
-    function Choice4(){
-        document.getElementById('MPC').value = "4";
-    }
-</script>

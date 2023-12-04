@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Survey;
 use App\Models\Question;
+use App\Models\Answer;
 use Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -114,4 +115,11 @@ class SurveyController extends Controller
         return Redirect::to('/survey/manage');
     }
 
+    function AnalyzeSurvey($survey_id){
+        $survey = Survey::all()->where("id", $survey_id)->first();
+        $questions = Question::all()->where("survey_id", $survey_id);
+        // $answer = Answer::whereIn('question_id', $questions->pluck('id'))->get();
+        $answer = Answer::all()->where("survey_id", $survey_id);
+        return view('AnalyzeSurvey', ["survey"=>$survey, "questions"=>$questions, "answer"=>$answer]);
+    }
 }

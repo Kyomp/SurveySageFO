@@ -10,10 +10,14 @@ class Answer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["user_id", "question_id", "answer"];
+    protected $fillable = ["user_id", "question_id", "answer", "survey_id"];
 
     public function questions(): BelongsTo{
         return $this->belongsTo(Question::class, "question_id");
+    }
+
+    public function surveys(): BelongsTo{
+        return $this->belongsTo(Survey::class, "survey_id");
     }
 
     public function user(): BelongsTo{

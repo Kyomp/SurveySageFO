@@ -48,6 +48,8 @@ Route::prefix('/survey')->group(function(){
     Route::get('/open/{survey_id}', [SurveyController::class, "OpenSurvey"]);
 
     Route::get('/close/{survey_id}', [SurveyController::class, "CloseSurvey"]);
+
+    Route::get('/analyze/{survey_id}', [SurveyController::class, "AnalyzeSurvey"]);
 });
 
 Route::prefix('/survey/participate')->group(function(){

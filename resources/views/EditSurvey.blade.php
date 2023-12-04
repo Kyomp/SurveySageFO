@@ -90,6 +90,11 @@
         </button>
       </div>
       <div class="pt-6 flex justify-center items-center">
+        <a href="{{ url('/survey/analyze/'.$survey->id) }}" class="text-white font-bold py-2 px-4 rounded ml-3" style="background-color: #FF5733;">
+          Go to Analytical Page
+        </a>
+      </div>
+      <div class="pt-6 flex justify-center items-center">
         <button type="submit" class="text-white font-bold py-2 px-4 rounded" style="background-color: #4417A3;">
           Save Survey
         </button>

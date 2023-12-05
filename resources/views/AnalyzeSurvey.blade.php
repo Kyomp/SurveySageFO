@@ -1,172 +1,141 @@
-<x-app-layout>
-    <div class="min-h-screen h-fit items-center max-w-none-xl p-4" style="background: #3e06b6; color: #e3d6ff">
-        <div class="shadow-md rounded mx-auto px-6 pt-6 pb-12 mb-1/2 w-11/12 mb-10" style="background-color: #2B047E;">
-            <h1 class="text-3xl font-semibold mb-4">{{ $survey->title }} : {{ $survey->points }} points</h1>
+<?php
 
-            <div>
-                Status :
-                <span id="statusIndicator" class="ml-2">
-                    @if ($survey->open == 1)
-                        <span class="text-green-500">Open</span>
-                    @else
-                        <span class="text-red-500">Closed</span>
-                    @endif
-                </span>
+namespace App\Http\Controllers;
 
-                <button id="toggleStatus" onclick="toggleStatus()">
-                    Toggle Status
-                </button>
-            </div>
-        </div>
+use Illuminate\Http\Request;
+use App\Models\Survey;
+use App\Models\Question;
+use App\Models\Answer;
+use Auth;
+use Illuminate\Support\Facades\Redirect;
 
-        <script>
-            function toggleStatus() {
-                var statusIndicator = document.getElementById('statusIndicator');
-                var toggleButton = document.getElementById('toggleStatus');
+class SurveyController extends Controller
+{
+    function ManageSurvey() {
+        $ownSurveys = Survey::all()->where("user_id", Auth::user()->id);
 
-                if (statusIndicator.textContent.trim() === 'Open') {
-                    statusIndicator.innerHTML = '<span class="text-red-500">Closed</span>';
-                    toggleButton.innerHTML = 'Open Survey';
-                } else {
-                    statusIndicator.innerHTML = '<span class="text-green-500">Open</span>';
-                    toggleButton.innerHTML = 'Close Survey';
-                }
+        $questions = [];
+        foreach ($ownSurveys as $survey) {
+            $surveyId = $survey->id;
 
-                // Add logic to update the $survey->open accordingly (you might need to make an AJAX request here).
-                // For simplicity, this example only updates the UI.
+            // Use the survey ID to filter questions
+            $questions[$surveyId] = Question::all()->where("survey_id", $surveyId)->count();
+        }
+
+        return view('ManageSurvey',['ownSurveys' => $ownSurveys, 
+                                    'user' => Auth::user(),
+                                    'questions' => $questions]);
+    }
+
+    function CreateSurvey(){
+        $survey = new Survey;
+        $survey->user_id = Auth::user()->id;
+        $survey->points = 0;
+        $survey->open = 0;
+        $survey->title = '';
+        $survey->save();
+        return Redirect::to("/survey/edit/$survey->id");
+    }
+
+    function EditSurvey($survey_id){
+        $survey = Survey::all()->where("id", $survey_id)->first();
+        $questions = Question::all()->where("survey_id", $survey_id);
+        return view('EditSurvey', ["survey"=>$survey, "questions"=>$questions]);
+    }
+
+    function SaveSurvey(Request $request, $survey_id){
+
+        $survey_questions = $request->validate([
+            'questions.*' => 'required',
+            'id.*' => 'required',
+            'type.*' => 'required',
+            'choice1.*' => 'required',
+            'choice2.*' => 'required',
+            'choice3.*' => 'required',
+            'choice4.*' => 'required',
+        ]);
+
+        $questions = $survey_questions['questions'];
+        $ids = $survey_questions['id'];
+        $types = $survey_questions['type'];
+        if(array_key_exists('choice1', $survey_questions)){
+            $choice1 = $survey_questions['choice1'];
+            $choice2 = $survey_questions['choice2'];
+            $choice3 = $survey_questions['choice3'];
+            $choice4 = $survey_questions['choice4'];
+        }
+        $count = 0;
+        $pointTotal = 0;
+        foreach( $questions as $index => $question ) {
+            if($types[$index]==2){
+                $question = $question."[{".$choice1[$count]."}{".$choice2[$count]."}{".$choice3[$count]."}{".$choice4[$count]."}]";
+                $count+=1;
+                $pointTotal+=2;
+            } 
+            else{
+                $pointTotal+=3;
             }
-        </script>
 
+            if($ids[$index]==-1){
+                $quest = new Question;
+                $quest->question = $question;
+                $quest->survey_id = $survey_id;
+                $quest->question_type = $types[$index];
+                $quest->save();
+            }
+            else{
+                $quest = Question::find($ids[$index]);
+                if($quest->question != $question){
+                    $quest->question = $question;
+                    $quest->save();
+                }
+            }
+        }
 
-        @foreach ($questions as $question)
-            @php
-                $userResponses = []; // Reset the array for each question
-            @endphp
-            <div class="mb-4">
-                @if ($question->question_type == 2)
-                    <?php
-                    // Extract the question text up until '[' character
-                    $questionText = explode('[', $question->question)[0];
-                    $chartId = 'chart_' . $question->id; // Unique identifier for each chart
-                    preg_match_all('/\{(.*?)\}/', $question->question, $matches);
-                    ?>
+        $survey = Survey::find($survey_id);
 
-                    <div class="shadow-md rounded mx-auto px-6 pt-6 pb-12 mb-1/2 w-11/12"
-                        style="background-color: #2B047E;">
-                        <p class="text-xl font-semibold mb-2">{{ $questionText }}</p>
+        $Form = $request->validate([
+            'title' => 'required',
+        ]);
 
+        $survey->points=$pointTotal;
+        $survey->title = $Form['title'];
+        $survey->save();
 
-                        {{-- // getting answer array --}}
-                        @foreach ($answer->where('question_id', $question->id) as $ans)
-                            <?php $userResponses[] = $ans->answer; ?>
-                        @endforeach
+        return Redirect::to('/survey/manage');
+    }
 
+    function OpenSurvey($survey_id){
+        $survey = Survey::find($survey_id);
+        $user = Auth::user();
+        if($user->points > $survey->points){
+            $survey->open = 1;
+            $survey->save();
+        }
+        return Redirect::to('/survey/manage');
+    }
 
-                        <div id="{{ $chartId }}" class="mt-8"></div>
-                    </div>
-                @else
-                    <div class="shadow-md rounded mx-auto px-6 pt-6 pb-12 mb-1/2 w-11/12"
-                        style="background-color: #2B047E;">
-                        <p class="text-xl font-semibold mb-2">{{ $question->question }}</p>
+    function CloseSurvey($survey_id){
+        $survey = Survey::find($survey_id);
+        $survey->open = 0;
+        $survey->save();
+        return Redirect::to('/survey/manage');
+    }
 
-                        <div style="overflow-y: auto; max-height: 200px;">
-                            @foreach ($answer->where('question_id', $question->id) as $ans)
-                                <p class="ml-4 mb-4" style="background-color: #43199f; padding: 10px; margin: 10px;">
-                                    {{ $ans->answer }}</p>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-            </div>
+    function AnalyzeSurvey($survey_id){
+        $survey = Survey::all()->where("id", $survey_id)->first();
+        $questions = Question::all()->where("survey_id", $survey_id);
+        // $answer = Answer::whereIn('question_id', $questions->pluck('id'))->get();
+        $answer = Answer::all()->where("survey_id", $survey_id);
+        return view('AnalyzeSurvey', ["survey"=>$survey, "questions"=>$questions, "answer"=>$answer]);
+    }
 
-            @if ($question->question_type == 2)
-                <script type="text/javascript">
-                    var userResponses = {!! json_encode($userResponses) !!};
-                    var options = {!! json_encode($matches[1]) !!};
-
-                    // Count the frequency of each choice
-                    var choiceFrequency = userResponses.reduce(function(acc, choice) {
-                        acc[choice - 1]++; // Choices are 1-indexed, so decrement to match array index
-                        return acc;
-                    }, Array(options.length).fill(0));
-
-                    // Create data array for the histogram
-                    var histogramData = choiceFrequency.map(function(frequency, index) {
-                        return {
-                            x: options[index],
-                            y: frequency
-                        };
-                    });
-
-                    // Update the options for the chart
-                    var options = {
-                        series: [{
-                            name: 'Histogram',
-                            data: histogramData
-                        }],
-                        chart: {
-                            type: 'bar', // Change the chart type to 'bar' for a histogram
-                            height: 300 // Adjust the height of the chart
-                        },
-                        plotOptions: {
-                            bar: {
-                                horizontal: true,
-                                barHeight: '80%', // Adjust the height of the bars
-                                colors: {
-                                    ranges: [{
-                                        from: 0,
-                                        to: 0,
-                                        color: '#ffffff' // Set the color of the bars
-                                    }]
-                                },
-                            }
-                        },
-                        xaxis: {
-                            title: {
-                                text: 'Frequency',
-                                style: {
-                                    color: '#ffffff' // Set the color of the x-axis title
-                                }
-                            },
-                            labels: {
-                                style: {
-                                    colors: '#ffffff' // Set the color of the x-axis labels
-                                }
-                            }
-                        },
-                        yaxis: {
-                            labels: {
-                                style: {
-                                    colors: '#ffffff' // Set the color of the x-axis labels
-                                }
-                            }
-                        },
-                        fill: {
-                            colors: ['#C885FF'] // Set the color of the bars
-                        }
-                    };
-
-                    var chart = new ApexCharts(document.querySelector("#{{ $chartId }}"), options);
-                    chart.render();
-                </script>
-            @endif
-        @endforeach
-
-        <div class="pt-6 flex justify-center items-center">
-            <button type="button" onclick="delSurvey()" class="text-white font-bold py-2 px-4 rounded"
-                style="background-color: #4417A3;">
-                Delete Survey
-            </button>
-        </div>
-        <div class="pt-6 flex justify-center items-center">
-            <button type="button" onclick="endSurvey()" class="text-white font-bold py-2 px-4 rounded"
-                style="background-color: #4417A3;">
-                Finish Survey
-            </button>
-        </div>
-
-
-
-
-    </div>
-</x-app-layout>
+    function DeleteSurvey($survey_id){
+        $survey = Survey::find($survey_id);
+        $user = Auth::user();
+        if($user->id == $survey->user_id){
+            $survey->delete();
+        }
+        return Redirect::to('/survey/manage');
+    }
+}

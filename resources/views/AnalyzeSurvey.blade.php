@@ -13,13 +13,13 @@
                     @endif
                 </span>
 
-                <button id="toggleStatus" onclick="toggleStatus()">
+                <!-- <button id="toggleStatus" onclick="toggleStatus()">
                     Toggle Status
-                </button>
+                </button> -->
             </div>
         </div>
 
-        <script>
+        <!-- <script>
             function toggleStatus() {
                 var statusIndicator = document.getElementById('statusIndicator');
                 var toggleButton = document.getElementById('toggleStatus');
@@ -35,7 +35,7 @@
                 // Add logic to update the $survey->open accordingly (you might need to make an AJAX request here).
                 // For simplicity, this example only updates the UI.
             }
-        </script>
+        </script> -->
 
 
         @foreach ($questions as $question)

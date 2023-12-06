@@ -98,7 +98,7 @@ class SurveyController extends Controller
             'title' => 'required',
         ]);
 
-        $survey->points=$pointTotal;
+        $survey->points+=$pointTotal;
         $survey->title = $Form['title'];
         $survey->save();
 

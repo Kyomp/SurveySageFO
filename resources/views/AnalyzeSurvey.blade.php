@@ -153,16 +153,16 @@
         @endforeach
 
         <div class="pt-6 flex justify-center items-center">
-            <button type="button" onclick="delSurvey()" class="text-white font-bold py-2 px-4 rounded"
+            <a href="{{url('/survey/delete/'.$survey->id)}}" class="text-white font-bold py-2 px-4 rounded"
                 style="background-color: #4417A3;">
                 Delete Survey
-            </button>
+            </a>
         </div>
         <div class="pt-6 flex justify-center items-center">
-            <button type="button" onclick="endSurvey()" class="text-white font-bold py-2 px-4 rounded"
+            <a href="{{url('/survey/edit/'.$survey->id)}}" class="text-white font-bold py-2 px-4 rounded"
                 style="background-color: #4417A3;">
-                Finish Survey
-            </button>
+                Edit Survey
+            </a>
         </div>
 
 

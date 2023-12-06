@@ -129,4 +129,13 @@ class SurveyController extends Controller
         $answer = Answer::all()->where("survey_id", $survey_id);
         return view('AnalyzeSurvey', ["survey"=>$survey, "questions"=>$questions, "answer"=>$answer]);
     }
+
+    function DeleteSurvey($survey_id){
+        $survey = Survey::find($survey_id);
+        $user = Auth::user();
+        if($user->id == $survey->user_id){
+            $survey->delete();
+        }
+        return Redirect::to('/survey/manage');
+    }
 }
